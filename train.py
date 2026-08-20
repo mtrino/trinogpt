@@ -233,7 +233,7 @@ while x.size(1) < max_length:
         x = torch.cat([x, xcol], dim=1)
 
 # print the generated text
-for i in range(num_return_sequences):
-    tokens = x[i, :].tolist()
-    decoded = enc.decode(tokens)
-    print(">", decoded)
+# for i in range(num_return_sequences):
+#     tokens = x[i, :].tolist()
+#     decoded = enc.decode(tokens)
+#     print(">", decoded)
