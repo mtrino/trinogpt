@@ -291,7 +291,9 @@ torch.set_float32_matmul_precision('high') # enabling tf32
 # Initializing the model
 model = GPT(GPTConfig())
 model.to(device)
-model = torch.compile(model)
+use_compile = False
+if use_compile:
+    model = torch.compile(model)
 if ddp:
     model = DDP(model, device_ids=[ddp_local_rank])
 raw_model = model.module if ddp else model
