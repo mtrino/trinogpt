@@ -2,6 +2,8 @@ import os
 import torch
 import numpy as np
 
+from configs.pretrain import TrainingConfig
+
 def _load_tokens(filename):
     npt = np.load(filename)
     npt = npt.astype(np.int32)
@@ -17,7 +19,7 @@ class DataLoader:
         self.num_processes = num_processes
         assert split in ('train', 'val')
 
-        data_root = "data"
+        data_root = TrainingConfig().data_root
         shards = os.listdir(data_root)
         shards = sorted([s for s in shards if split in s])
         shards = [os.path.join(data_root, shard) for shard in shards]
