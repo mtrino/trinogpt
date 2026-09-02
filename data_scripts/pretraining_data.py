@@ -19,22 +19,22 @@ TARGET_RECIPE = {
         "text_key": "text",
         "target_tokens": 1_250_000_000  # 50%
     },
-    "starcoder2": {
-        "path": "bigcode/starcoder2-15b",
-        "name": "default",
+    "cosmopedia_code": {
+        "path": "HuggingFaceTB/cosmopedia",
+        "name": "stanford",  
         "split": "train",
-        "text_key": "content",
-        "target_tokens": 500_000_000    # 20%
+        "text_key": "text",
+        "target_tokens": 500_000_000     
     },
     "slimpajama_wiki": {
-        "path": "cerebras/SlimPajama-627B",
+        "path": "DKYoon/SlimPajama-6B",
         "name": "default",
         "split": "train",
         "text_key": "text",
         "target_tokens": 500_000_000    # 20%
     },
-    "openwebtext": {
-        "path": "openwebtext",
+    "openwebmath": {
+        "path": "open-web-math/open-web-math",
         "name": "default",
         "split": "train",
         "text_key": "text",
