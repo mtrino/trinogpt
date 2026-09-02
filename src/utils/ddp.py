@@ -28,9 +28,9 @@ def setup_ddp():
 
     return {
         "is_ddp": ddp,
-        "rank": ddp_rank,
-        "local_rank": ddp_local_rank,
-        "world_size": ddp_world_size,
+        "ddp_rank": ddp_rank,
+        "ddp_local_rank": ddp_local_rank,
+        "ddp_world_size": ddp_world_size,
         "device": device,
         "master_process": master_process
     }

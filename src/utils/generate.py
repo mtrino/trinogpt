@@ -22,7 +22,7 @@ def generate(model, prompt, num_sequences, max_length, ddp_env, k=50):
     for i in range(num_sequences):
         token_list = xgen[i, :max_length].tolist()
         decoded = enc.decode(token_list)
-        print(f"rank {ddp_env["ddp_rank"]}, sample {i}: {decoded}")
+        print(f'rank {ddp_env["ddp_rank"]}, sample {i}: {decoded}')
 
 
 

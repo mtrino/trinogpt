@@ -34,8 +34,8 @@ if ddp_env['master_process']:
     print(f"total desired batch size: {total_batch_size}")
     print(f"=> calculated gradient accumulation steps: {grad_accum_steps}")
 
-train_loader = DataLoader(B=micro_batch_size, T=seq_len, process_rank=ddp_env['rank'], num_processes=ddp_env['ddp_world_size'], split="train")
-val_loader = DataLoader(B=micro_batch_size, T=seq_len, process_rank=ddp_env['rank'], num_processes=ddp_env['ddp_world_size'], split="val")
+train_loader = DataLoader(B=micro_batch_size, T=seq_len, process_rank=ddp_env['ddp_rank'], num_processes=ddp_env['ddp_world_size'], split="train")
+val_loader = DataLoader(B=micro_batch_size, T=seq_len, process_rank=ddp_env['ddp_rank'], num_processes=ddp_env['ddp_world_size'], split="val")
 
 # Using tensor cores using tf32 matrix multiply
 torch.set_float32_matmul_precision('high') # enabling tf32
@@ -46,7 +46,7 @@ if ModelConfig().use_compile:
     model = torch.compile(model)
 if ddp_env['is_ddp']:
     model = DDP(model, device_ids=[ddp_env['ddp_local_rank']])
-raw_model = model.module if ddp_env['ddp'] else model
+raw_model = model.module if ddp_env['is_ddp'] else model
 
 max_lr = TrainingConfig().max_lr
 min_lr = TrainingConfig().min_lr

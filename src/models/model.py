@@ -2,8 +2,8 @@ import torch
 import torch.nn as nn
 from torch.nn import functional as F
 
-from models.attention import CausalSelfAttention
-from models.ffn import MLP
+from src.models.attention import CausalSelfAttention
+from src.models.ffn import MLP
 
 # A single transformer block
 class Block(nn.Module):
@@ -30,7 +30,7 @@ class Model(nn.Module):
         self.transformer = nn.ModuleDict(dict(
             wte = nn.Embedding(config.vocab_size, config.n_embd),
             wpe = nn.Embedding(config.context_length, config.n_embd),
-            h = nn.ModuleList([Block(config) for _ in config.n_blocks]),
+            h = nn.ModuleList([Block(config) for _ in range(config.n_blocks)]),
             ln_f = nn.LayerNorm(config.n_embd)
         ))
         self.lm_head = nn.Linear(config.n_embd, config.vocab_size)
@@ -60,7 +60,7 @@ class Model(nn.Module):
         x = self.transformer.ln_f(x)
         logits = self.lm_head(x)
         loss = None
-        if targets:
+        if targets is not None:
             loss = F.cross_entropy(logits.view(-1, logits.size(-1)), targets.view(-1))
         return logits, loss
 
@@ -69,9 +69,9 @@ class Model(nn.Module):
         param_dict = {pn: p for pn, p in param_dict.items() if p.requires_grad}
         decay_params = [p for _, p in param_dict.items() if p.dim() >= 2]
         non_decay_params = [p for _, p in param_dict.items() if p.dim() < 2]
-        optim_groups = {
+        optim_groups = [
             {'params': decay_params, 'weight_decay': weight_decay},
             {'params': non_decay_params, 'weight_decay': 0},
-        }
+        ]
         optimizer = torch.optim.AdamW(optim_groups, lr=learning_rate, betas=(0.9, 0.95), eps=1e-8)
         return optimizer
